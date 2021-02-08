@@ -1,5 +1,5 @@
 from height_map_nl import HeightMapNL
-import rdconverter
+from coords import rdconverter
 
 hmnl = HeightMapNL()
 # leiden
