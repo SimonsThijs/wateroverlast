@@ -10,5 +10,3 @@ cd wateroverlast
 export PYTHONPATH=$PYTHONPATH:$(pwd)
 pip install -r requirements.txt
 ```
-
-You can download the .TIF files using the supplied script: hoogtekaart/download_ahn3.py. Or you can download the .TIF files from a repo and place them into the folder hoogtekaart/AHN3_data.
