@@ -1,4 +1,4 @@
-#NL hoogtekaart
+# NL hoogtekaart
 
 This directory provides a library to read the dutch heightmap. View main.py for its use.
 
