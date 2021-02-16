@@ -36,10 +36,9 @@ class PrecipitationNL(object):
 	def get_precipation_data(self, year, month, day, hour, minute, lat, lon):
 		file_name = self.get_file_name(year, month, day, hour, minute)
 
-		# if i understand correctly the center of the pixel represents the top left corner
+
 		# see geo_pixel_diff http://bibliotheek.knmi.nl/knmipubIR/IR2003-05.pdf page 12
-		# this observation is important for determining the closest grid from a lat lon coordinate
-		# we should be able to just round the result of the projection
+		# can we just roound?
 
 		coords = self.reproject(lat, lon)
 		coords = (int(round(coords[0])), int(round(coords[1])))

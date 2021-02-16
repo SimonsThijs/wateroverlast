@@ -5,6 +5,9 @@
 #knmi test
 knmi_test/
 
+# neerslag data
+neerslag/data/
+
 #dsstore
 .DS_Store
 
