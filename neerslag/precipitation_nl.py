@@ -36,12 +36,8 @@ class PrecipitationNL(object):
 	def get_precipation_data(self, year, month, day, hour, minute, lat, lon):
 		file_name = self.get_file_name(year, month, day, hour, minute)
 
-
-		# see geo_pixel_diff http://bibliotheek.knmi.nl/knmipubIR/IR2003-05.pdf page 12
-		# can we just rooud?
-
 		coords = self.reproject(lat, lon)
-		coords = (int(round(coords[0])), int(round(coords[1])))
+		coords = (int(coords[0]), int(coords[1]))
 
 		h5file = h5py.File(file_name)
 		data = h5file['image1/image_data'][:]
