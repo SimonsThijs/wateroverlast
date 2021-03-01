@@ -38,7 +38,7 @@ class PrecipitationNL(object):
 
 
 		# see geo_pixel_diff http://bibliotheek.knmi.nl/knmipubIR/IR2003-05.pdf page 12
-		# can we just roound?
+		# can we just rooud?
 
 		coords = self.reproject(lat, lon)
 		coords = (int(round(coords[0])), int(round(coords[1])))
