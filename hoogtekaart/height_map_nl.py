@@ -27,7 +27,7 @@ class CustomTile(object):
 class HeightMapNL(object):
     datatype = '5m_dtm'
     datafolder = 'AHN3_data'
-    def __init__(self, data_file="bladindexen.json"):
+    def __init__(self, data_file="AHN3_data/bladindexen.json"):
         self.loaded_tile = None
         with open(data_file) as json_file:
             self.data = json.load(json_file)
