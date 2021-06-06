@@ -1,16 +1,19 @@
 import json
+import os 
 
 import osgeo.gdal as gdal
 import numpy as np
 from numpy import ma
 import rasterio
 from rasterio.plot import show
+from owslib.wcs import WebCoverageService
 
 from coords import rdconverter
 
 def map_to_pixel(pos, top_left_x, top_left_y, rastersize_x, rastersize_y):
     x = (pos[0] - top_left_x) / rastersize_x
     y = (pos[1] - top_left_y) / rastersize_y
+    # print(x,y)
     return (int(x), int(y))
 
 
@@ -26,11 +29,15 @@ class CustomTile(object):
 
 class HeightMapNL(object):
     datatype = '5m_dtm'
-    datafolder = 'AHN3_data'
-    def __init__(self, data_file="AHN3_data/bladindexen.json"):
+
+    datafolder = os.path.dirname(__file__) + '/AHN3_data'
+    def __init__(self, data_file="/AHN3_data/bladindexen.json"):
         self.loaded_tile = None
-        with open(data_file) as json_file:
+        self.dsm = False
+        with open(os.path.dirname(__file__) + data_file) as json_file:
             self.data = json.load(json_file)
+
+        self.detailed = False
 
     def is_in_tile(self, x, y, tile):
         coords_list = tile['geometry']['coordinates'][0][0]
@@ -42,7 +49,10 @@ class HeightMapNL(object):
         return min_x <= x and x < max_x and min_y < y and y <= max_y
 
     def get_filename(self, tilenr):
-        return HeightMapNL.datafolder + "/M5_" + tilenr.upper() + ".TIF" 
+        if self.dsm:
+            return HeightMapNL.datafolder + "/dsm/R5_" + tilenr.upper() + ".TIF" 
+        else:
+            return HeightMapNL.datafolder + "/M5_" + tilenr.upper() + ".TIF" 
 
     def load_file(self, tilenr):
         file_name = self.get_filename(tilenr)
@@ -121,37 +131,71 @@ class HeightMapNL(object):
         else:
             return None
 
+
+    # for detailed maps 0.5x0.5 we use the WCS map service
+    def detailed_height(self, x_min, y_max, x_max, y_min):
+        my_wcs = WebCoverageService('https://geodata.nationaalgeoregister.nl/ahn3/wcs', version='1.0.0')
+
+        identifier = 'ahn3_05m_dsm' if self.dsm else 'ahn3_05m_dtm'
+        output=my_wcs.getCoverage(identifier=identifier, width=round(x_max-x_min), height=round(y_max-y_min), bbox=(x_min,y_min,x_max,y_max), format='GEOTIFF_FLOAT32', CRS='EPSG:28992')
+        f=open('tmp.tif','wb')
+        f.write(output.read())
+        f.close()
+
+        raster = gdal.Open('tmp.tif')
+        band = raster.GetRasterBand(1)
+        return np.asarray(band.ReadAsArray())
+
     def get_height_area(self, x_min, y_max, x_max, y_min):
+
+        if self.detailed:
+            return self.detailed_height(x_min, y_max, x_max, y_min)
 
         # init the array of the proper size needs to take into account the raster size
         tile = self.get_tile(x_min, y_max)
+        if not tile:
+            return np.asarray([])
+
         corners = tile['geometry']['coordinates'][0][0]
         file = self.load_file(tile['properties']['bladnr'])
+        w1, h1 = self.map_to_pixel((x_min, y_max))
+        w2, h2 = self.map_to_pixel((x_max, y_min))
         width, height = map_to_pixel((x_max, y_min), x_min, y_max, self.gt[1], self.gt[5])
-        result_array = np.full((height+1,width+1), np.nan)
+        # print('=======')
+        # print(x_min, y_max)
+        # print(x_max, y_min)
+        # print(height,width)
+        result_array = np.full((h2-h1+1,w2-w1+1), np.nan)
 
 
         # get part that is definately in the tile
         x, y = self.map_to_pixel((x_min, y_max))
-        x2, y2 = self.map_to_pixel((min(x_max, corners[1][0]-0.0001), max(y_min, corners[2][1]+0.0000001)))
+        x2, y2 = self.map_to_pixel((min(x_max, corners[1][0]-0.01), max(y_min, corners[2][1]+0.01)))
+        # print('=======')
+        # print(y, y2)
+        # print(x, x2)
         arr = self.image[y:y2+1, x:x2+1]
+        # print(arr)
+        # print(arr.shape)
         result_array[0:0+arr.shape[0], 0:0+arr.shape[1]] = arr
 
         # bottom part
         if not self.is_in_tile(x_min, y_min, tile):
             new_top_left_x = x_min
-            new_top_left_y = corners[2][1]
+            new_top_left_y = corners[2][1]-0.01
+            # print(tile)
+            arr = self.get_height_area(new_top_left_x, new_top_left_y, min(x_max, corners[1][0]-0.01), y_min)
+            if arr.any():
+                result_array[y2-y+1:y2-y+1+arr.shape[0], 0:0+arr.shape[1]] = arr
 
-            arr = self.get_height_area(new_top_left_x, new_top_left_y, min(x_max, corners[1][0]-0.0000001), y_min)
-            result_array[y2-y+1:y2-y+1+arr.shape[0], 0:0+arr.shape[1]] = arr
-
-        # top part
+        # top part right
+        # print(x_max, y_max)
         if not self.is_in_tile(x_max, y_max, tile):
-            new_top_left_x = corners[1][0]
+            new_top_left_x = corners[2][0]+0.01
             new_top_left_y = y_max
-
             arr = self.get_height_area(new_top_left_x, new_top_left_y, x_max, y_min)
-            result_array[0:0+arr.shape[0], x2-x+1:x2-x+1+arr.shape[1]] = arr
+            if arr.any():
+                result_array[0:0+arr.shape[0], x2-x+1:x2-x+1+arr.shape[1]] = arr
 
 
         return result_array

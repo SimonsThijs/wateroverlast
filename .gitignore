@@ -8,6 +8,20 @@ knmi_test/
 # neerslag data
 neerslag/data/
 
+# BAG data
+BAG/data/
+
+data/final.json
+
+helper/
+
+scripts/autoencoder_heightmap/
+scripts/catboost_info/
+
+p2000meldingen/*.json
+
+*.pkl
+
 #dsstore
 .DS_Store
 

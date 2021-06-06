@@ -1,7 +1,8 @@
 import json
 import os
+import time
 
-template = "curl --output AHN3_data/{}.zip https://download.pdok.nl/rws/ahn3/v1_0/5m_dtm/M5_{}.ZIP"
+template = "curl --output dsm/{}.zip https://download.pdok.nl/rws/ahn3/v1_0/5m_dsm/R5_{}.ZIP"
 
 with open('bladindexen.json') as json_file:
 	data = json.load(json_file)
@@ -9,6 +10,7 @@ with open('bladindexen.json') as json_file:
 		bladnr = blad['properties']['bladnr']
 		command = template.format(bladnr, bladnr.upper())
 		os.system(command)
+		time.sleep(0.1)
 
 # use command 'unzip' to unzip the downloaded files
 
