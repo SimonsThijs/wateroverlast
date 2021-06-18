@@ -33,11 +33,11 @@ class HeightMapNL(object):
     datafolder = os.path.dirname(__file__) + '/AHN3_data'
     def __init__(self, data_file="/AHN3_data/bladindexen.json"):
         self.loaded_tile = None
-        self.dsm = False
+        self.dsm = False #dsm zijn gebouwen niet weggewerkt, dtm is alternatief dat is maaiveld
         with open(os.path.dirname(__file__) + data_file) as json_file:
             self.data = json.load(json_file)
 
-        self.detailed = False
+        self.detailed = False #0,5 x 0,5 m
 
     def is_in_tile(self, x, y, tile):
         coords_list = tile['geometry']['coordinates'][0][0]
@@ -147,8 +147,8 @@ class HeightMapNL(object):
         return np.asarray(band.ReadAsArray())
 
     def get_height_area(self, x_min, y_max, x_max, y_min):
-
-        if self.detailed:
+        # return numpy array met hoogte getallen
+        if self.detailed: #geeft hoogte voor 0,5x0,5 anders 5m bij 5m, die moet wel gedownload zijn
             return self.detailed_height(x_min, y_max, x_max, y_min)
 
         # init the array of the proper size needs to take into account the raster size
