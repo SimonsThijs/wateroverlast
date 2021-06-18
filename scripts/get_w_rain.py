@@ -46,6 +46,7 @@ def parse_datetime(data):
 # df0['target'] = 0
 # df0['date'] = df0.apply(get_random_date, axis=1)
 
+#df1, target is 1, dataframe met postieve meldingen
 df1 = pd.read_json('../data/parsed_w_precise_coords.json')[:]
 df1 = df1.dropna()
 df1['lat'] = df1['google_results'].apply(get_data, args=('lat',))
@@ -62,9 +63,10 @@ print(df1)
 
 HM = home_sampler.HomeSampler()
 # print()
+#empty dictionary
 data0 = {'lat':[], 'lng':[], 'date':[], 'target': []}
 
-def sample_random_houses_close(data):
+def sample_random_houses_close(data): #data is rij in dataset
     rdx = rdconverter.gps2X(data['lat'],data['lng'])
     rdy = rdconverter.gps2Y(data['lat'],data['lng'])
     da = HM.sample_in_range(rdx, rdy, 750, 250, 1)
@@ -76,20 +78,20 @@ def sample_random_houses_close(data):
         data0['date'].append(data['date'])
         data0['target'].append(0)
 
-df1.apply(sample_random_houses_close, axis=1)
+df1.apply(sample_random_houses_close, axis=1) #roep aan op elke rij
 df0 = pd.DataFrame(data0)
 
 # print(df0)
 df = (pd.concat([df0, df1], ignore_index=True))
 df = df.reset_index()
 # df['date'] = df.apply(parse_datetime, axis=1)
-df = df.sort_values(by=['date'])
+df = df.sort_values(by=['date']) #zorgt ervoor dat regen toevoegen sneller gaat
 
 
 
 
 
-PNL = precipitation_nl.PrecipitationNL(queue_size=300)
+PNL = precipitation_nl.PrecipitationNL(queue_size=300) #zet maar op 300 dan werkthet sneller
 
 
 
