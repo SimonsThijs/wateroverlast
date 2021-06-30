@@ -15,7 +15,7 @@ else:
     sys.path.append('../')
     savefile = '../../'
 
-from hoogtekaart import height_map_nl
+from .home.s2155435.wateroverlast.hoogtekaart import height_map_nl
 
 from BAG import home_sampler
 from coords import rdconverter
