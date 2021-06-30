@@ -6,7 +6,15 @@ begin = '2016-01-01 00:00:00'
 end = '2021-02-23 23:59:59'
 strfformat = "%Y-%m-%d %H:%M:%S"
 
-sys.path.append('../')
+if sys.argv[1] == 'alice':
+    filepath = '/home/s2155435/wateroverlast/scripts/'
+    sys.path = '/home/s2155435/wateroverlast/scripts/'
+    savefile = '/data/wateroverlast/'
+else:
+    filepath = '../'
+    sys.path.append('../')
+    savefile = '../../'
+
 from hoogtekaart import height_map_nl
 
 from BAG import home_sampler
@@ -50,7 +58,7 @@ def parse_datetime(data):
 # df0['date'] = df0.apply(get_random_date, axis=1)
 
 #df1, target is 1, dataframe met postieve meldingen
-df1 = pd.read_json('../data/parsed_w_precise_coords.json')[:]
+df1 = pd.read_json(filepath+'data/parsed_w_precise_coords.json')[:]
 df1 = df1.dropna()
 df1['lat'] = df1['google_results'].apply(get_data, args=('lat',))
 df1['lng'] = df1['google_results'].apply(get_data, args=('lng',))
@@ -63,6 +71,7 @@ df1['date'] = df1.apply(parse_datetime, axis=1)
 df1 = pd.concat([df1], ignore_index=True)
 print("df1")
 print(df1)
+df1.to_csv(savefile+'p2000.csv')
 
 HM = home_sampler.HomeSampler()
 # print()
@@ -91,6 +100,7 @@ df = df.reset_index()
 # df['date'] = df.apply(parse_datetime, axis=1)
 df = df.sort_values(by=['date']) #zorgt ervoor dat regen toevoegen sneller gaat
 
+df.to_csv(savefile+'sample.csv')
 
 
 
@@ -167,12 +177,16 @@ def get_height_data(data):
 
 df['height_dtm'] = df.apply(get_height_data, axis=1)
 HMNL.dsm = True
-
+print(df)
+df.to_pickle(savefile+'sampleHeight1.pkl')
 total = len(df)
 count = 0
 btime = time.time()
 
+
 df['height_dsm'] = df.apply(get_height_data, axis=1)
+print(df)
+df.to_pickle(savefile+'sampleHeight1.pkl')
 
 total = len(df)
 count = 0
@@ -180,7 +194,7 @@ btime = time.time()
 
 df['prec12'] = df.apply(get_precipitation_data, axis=1)
 
-df.to_pickle('test_samples_close_homes250_750_detailed.pkl')
+df.to_pickle(savefile+'test_samples_close_homes250_750_detailed.pkl')
 
 
 
