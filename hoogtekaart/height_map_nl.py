@@ -1,8 +1,7 @@
 import json
 import os 
 
-import osgeo.gdal as gdal
-import numpy as np
+from osgeo import osr,gdal import numpy as np
 from numpy import ma
 import rasterio
 from rasterio.plot import show
