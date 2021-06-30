@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
+import sys
 
 begin = '2016-01-01 00:00:00'
 end = '2021-02-23 23:59:59'
 strfformat = "%Y-%m-%d %H:%M:%S"
+
+sys.path.append('../')
 from hoogtekaart import height_map_nl
 
 from BAG import home_sampler
@@ -67,6 +70,7 @@ HM = home_sampler.HomeSampler()
 data0 = {'lat':[], 'lng':[], 'date':[], 'target': []}
 
 def sample_random_houses_close(data): #data is rij in dataset
+    print('sample for', data)
     rdx = rdconverter.gps2X(data['lat'],data['lng'])
     rdy = rdconverter.gps2Y(data['lat'],data['lng'])
     da = HM.sample_in_range(rdx, rdy, 750, 250, 1)

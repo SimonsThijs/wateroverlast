@@ -7,7 +7,7 @@ import time
 from datetime import timedelta, datetime
 import queue
 
-from helper import helper
+#from helper import helper
 
 class PrecipitationNL(object):
 	"""docstring for PrecipitationNL"""
