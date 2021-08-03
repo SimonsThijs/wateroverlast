@@ -1,0 +1,46 @@
+Net(
+  (conv1): Conv2d(1, 3, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(3, 5, kernel_size=(5, 5), stride=(1, 1))
+  (fc1): Linear(in_features=11045, out_features=500, bias=True)
+  (fc2): Linear(in_features=500, out_features=84, bias=True)
+  (fc3): Linear(in_features=84, out_features=1, bias=True)
+  (dropout1): Dropout(p=0.7, inplace=False)
+  (dropout2): Dropout(p=0.7, inplace=False)
+  (dropout3): Dropout(p=0.7, inplace=False)
+)
+
+dsm
+[0.5363636363636364, 0.509090909090909, 0.5181818181818182, 0.5227272727272727, 0.5, 0.5045454545454545, 0.4772727272727273, 0.5636363636363636, 0.5227272727272727, 0.4863636363636364, 0.5272727272727272, 0.5318181818181819, 0.5272727272727272, 0.45454545454545453, 0.5227272727272727, 0.5363636363636364, 0.509090909090909, 0.509090909090909, 0.5, 0.4772727272727273]
+
+0.5118181818181818 en 0.024325614836835725
+
+======================
+
+Net(
+  (conv1): Conv2d(1, 1, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(1, 3, kernel_size=(21, 21), stride=(1, 1))
+  (fc1): Linear(in_features=4563, out_features=10, bias=True)
+  (fc3): Linear(in_features=10, out_features=1, bias=True)
+  (dropout1): Dropout(p=0.6, inplace=False)
+  (dropout3): Dropout(p=0.6, inplace=False)
+)
+dsm
+
+
+
+getting more data
+reducing rain threshold
+add more negative samples
+zoom in on the data
+flip and shift the data
+
+Net(
+  (conv1): Conv2d(1, 1, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(1, 3, kernel_size=(21, 21), stride=(1, 1))
+  (fc1): Linear(in_features=4563, out_features=10, bias=True)
+  (fc3): Linear(in_features=10, out_features=1, bias=True)
+  (dropout1): Dropout(p=0.5, inplace=False)
+  (dropout3): Dropout(p=0.5, inplace=False)
+)
+
+

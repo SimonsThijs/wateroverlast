@@ -1,0 +1,4 @@
+1. probleem is te complex voor huidige modellen
+2. niet genoeg training data
+3. overfitting
+4. training data bevat fouten of is van een te hoog escalatieniveau
