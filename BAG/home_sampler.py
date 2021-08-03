@@ -21,7 +21,8 @@ class HomeSampler(object):
 		# self.df = self.df.set_index(['x','y'])
 
 	def sample_in_range(self, x, y, max_range, min_range, n):
-		
+		# x, y rijksdriehoek coordinaten van middelpunt
+		# max_range, min_range geven aan binnen welke afstand van middelpunt gesampled moet worden
 		data = self.df.loc[(self.df['x']<=x+max_range)&(self.df['x']>=x-max_range)&(self.df['y']<=y+max_range)&(self.df['y']>=y-max_range)]
 		data['xdiff'] = data['x'] - x
 		data['ydiff'] = data['y'] - y
