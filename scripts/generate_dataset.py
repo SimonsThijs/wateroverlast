@@ -24,6 +24,7 @@ from layerbuilder import bag_layer, bgt_layer, ahn_layer, util
 from random import randrange
 from datetime import timedelta, datetime
 import time
+import os
 
 total = 0
 count = 0
@@ -83,7 +84,7 @@ def calc_sums(row):
 
 
 # step 1
-df1 = pd.read_json('../data/parsed_w_precise_coords.json')[:]
+df1 = pd.read_json('../data/parsed_w_precise_coords.json')
 df1 = df1.dropna()
 df1['lat'] = df1['google_results'].apply(get_data, args=('lat',))
 df1['lng'] = df1['google_results'].apply(get_data, args=('lng',))
@@ -92,13 +93,14 @@ df1 = df1[['lat','lng','target','date']]
 df1 = df1.dropna()
 df1['date'] = df1.apply(parse_datetime, axis=1)
 
-df1 = df1[150:200]
+# df1 = df1[150:200]
 
 # step 2
 PNL = precipitation_nl.PrecipitationNL(queue_size=300)
 total = len(df1)
 count = 0
 btime = time.time()
+df1 = df1.sort_values(by=['date'])
 df1['prec12'] = df1.apply(get_precipitation_data, axis=1)
 
 
@@ -133,6 +135,7 @@ df0 = pd.DataFrame(data0)
 total = len(df0)
 count = 0
 btime = time.time()
+df0 = df0.sort_values(by=['date'])
 df0['prec12'] = df0.apply(get_precipitation_data, axis=1)
 
 df = pd.concat([df0, df1], ignore_index=True)
@@ -195,8 +198,14 @@ def add_layers(data):
 
 df['layers'] = df.apply(add_layers, axis=1)
 
+is_dslab = os.getenv('DS_LAB', None)
+if is_dslab:
+    dir_ = '/local/s1830120/'
+else:
+    dir_ = ''
 
-df.to_pickle('50-500.pkl', protocol=4)
+
+df.to_pickle(dir_ + '50-500.pkl', protocol=4)
 
 print(df)
 

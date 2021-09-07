@@ -5,6 +5,7 @@ from layerbuilder.base import Layer
 import io
 import json
 import time
+import os
 
 import zipfile
 import requests
@@ -63,13 +64,19 @@ class BGTLayer(Layer):
 	def __init__(self):
 		self.indexes = {}
 		super(BGTLayer, self).__init__()
+		is_dslab = os.getenv('DS_LAB', None)
+		if is_dslab:
+			self.dir = '/local/s1830120/'
+		else:
+			self.dir = self.dir_ + '/data/'
+		
 
 	def get_gdal_dataset(self, x_min, x_max, y_min, y_max, **kwargs):
 		if 'layer' in kwargs:
 			type_ = kwargs['layer']
 
 			if type_ not in self.indexes:
-				index = rtree.index.Rtree(self.dir_ + '/data/{}'.format(type_))
+				index = rtree.index.Rtree(self.dir + '{}'.format(type_))
 				self.indexes[type_] = index
 
 			index = self.indexes[type_]

@@ -6,6 +6,7 @@ from pyproj import CRS, Transformer
 import time
 from datetime import timedelta, datetime
 import queue
+import os
 
 from helper import helper
 
@@ -16,6 +17,12 @@ class PrecipitationNL(object):
 		self.transformer = None
 		self.cache = {}
 		self.cache_queue = queue.Queue(maxsize=queue_size)
+
+		is_dslab = os.getenv('DS_LAB', None)
+		if is_dslab:
+			self.dir = '/local/s1830120/neerslagdata/'
+		else:
+			self.dir = '/Users/thijssimons/Documents/projects/wateroverlast/'
 		
 	def get_file_name(self, year, month, day, hour, minute):
 		# hours and minutes are 0 index e.g. hours go from 0 to 23
@@ -23,7 +30,7 @@ class PrecipitationNL(object):
 		# floor to closest 5 min
 		minute = int(minute/5) * 5
 
-		return "/Users/thijssimons/Documents/projects/wateroverlast/neerslag/data/{}/{:02d}/RAD_NL25_RAC_MFBS_5min_{}{:02d}{:02d}{:02d}{:02d}_NL.h5".format(
+		return self.dir + "neerslag/data/{}/{:02d}/RAD_NL25_RAC_MFBS_5min_{}{:02d}{:02d}{:02d}{:02d}_NL.h5".format(
 				year, month, year, month, day, hour, minute)
 
 	# @helper.timing
