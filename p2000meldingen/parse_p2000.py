@@ -10,6 +10,8 @@ import re
 
 strfformat = "%Y-%m-%d %H:%M:%S"
 
+# this file preprocesses the p2000 messages to obtain the final the final datasets
+# final datasets can be found in /data
 
 def load_data(file):
     with open(file, 'r') as file:
@@ -128,6 +130,7 @@ def delete_empty_address(data):
     return keep
 
 def patch(data):
+    # patch.txt can be found in /data
     patch_data = pd.read_csv('patch.txt', delimiter=' -----', engine='python', header=None)
     patch_data.columns = ['m', 'old', 'new']
     mutations = {}
@@ -178,6 +181,7 @@ def check_oude_nieuwe(data):
 
 
 def main():
+    # fina.json is the raw data obtained from the scrape
     data = load_data('final.json')
     data = patch(data)
     data = delete_empty_address(data)
