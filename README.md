@@ -55,3 +55,6 @@ cd wateroverlast
 export PYTHONPATH=$PYTHONPATH:$(pwd)
 pip install -r requirements.txt
 ```
+
+Some tools require additional datasets to be downloaded. Please look at the section [data sources](#data-sources) 
+
