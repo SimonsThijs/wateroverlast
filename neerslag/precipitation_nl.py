@@ -17,12 +17,15 @@ class PrecipitationNL(object):
 		self.transformer = None
 		self.cache = {}
 		self.cache_queue = queue.Queue(maxsize=queue_size)
+		dire = os.path.dirname(__file__)
+		if dire:
+			dire += '/'
 
 		is_dslab = os.getenv('DS_LAB', None)
 		if is_dslab:
-			self.dir = '/local/s1830120/neerslagdata/'
+			self.dir = '/local/s1830120/neerslagdata/neerslag/'
 		else:
-			self.dir = '/Users/thijssimons/Documents/projects/wateroverlast/'
+			self.dir = dire
 		
 	def get_file_name(self, year, month, day, hour, minute):
 		# hours and minutes are 0 index e.g. hours go from 0 to 23
@@ -30,7 +33,7 @@ class PrecipitationNL(object):
 		# floor to closest 5 min
 		minute = int(minute/5) * 5
 
-		return self.dir + "neerslag/data/{}/{:02d}/RAD_NL25_RAC_MFBS_5min_{}{:02d}{:02d}{:02d}{:02d}_NL.h5".format(
+		return self.dir + "data/{}/{:02d}/RAD_NL25_RAC_MFBS_5min_{}{:02d}{:02d}{:02d}{:02d}_NL.h5".format(
 				year, month, year, month, day, hour, minute)
 
 	# @helper.timing
@@ -82,9 +85,6 @@ class PrecipitationNL(object):
 		except Exception as e:
 			return np.nan
 		
-		# print("3", time.time()-t0)
-
-		# return result
 
 	# @helper.timing
 	def get_precipation_data_past_hours_list(self, year, month, day, hour, minute, lat, lon, n):
@@ -116,6 +116,19 @@ class PrecipitationNL(object):
 			date = date-delta
 
 		return _sum
+
+
+
+if __name__ == '__main__':
+	pnl = PrecipitationNL()
+
+	d = pnl.get_precipation_data_past_hours_list(2020, 5, 20, 12, 5, 52.1613, 4.49063, 24)
+	print(d)
+
+
+
+
+
 
 
 

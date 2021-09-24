@@ -177,18 +177,22 @@ def add_layers(data):
         ahn_data = ahn.get_gdal_dataset(x-d, x+d, y-d, y+d)
         arr[0] = ahn_data.ReadAsArray()
 
+        # all buildings in the area
         bag_data = bag.get_gdal_dataset(x-d, x+d, y-d, y+d)
         arr[1] = util.to_raster(bag_data, ahn_data, 'bag')
 
         bag_data_single = bag.get_gdal_dataset(x-d, x+d, y-d, y+d, intersection_type='single')
         arr[2] = util.to_raster(bag_data_single, ahn_data, 'bag_single')
 
+        #water
         bgt_data = bgt.get_gdal_dataset(x-d, x+d, y-d, y+d, layer='water')
         arr[3] = util.to_raster(bgt_data, ahn_data, 'water')
 
+        #non-permeable surface area
         bgt_data = bgt.get_gdal_dataset(x-d, x+d, y-d, y+d, layer='verhard')
         arr[4] = util.to_raster(bgt_data, ahn_data, 'verhard')
 
+        #permeable surface area
         bgt_data = bgt.get_gdal_dataset(x-d, x+d, y-d, y+d, layer='onverhard')
         arr[5] = util.to_raster(bgt_data, ahn_data, 'onverhard')
         return arr
