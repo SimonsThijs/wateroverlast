@@ -11,7 +11,7 @@ One of the problems with the p2000 messages is that it is not always sure if the
 
 The negative examples are obtained by finding adresses close to a flooding which are not mentioned in a p2000 message at that moment of time. For this we use the BAG (see: <https://www.pdok.nl/introductie/-/article/basisregistratie-adressen-en-gebouwen-ba-1>).
 
-## Data source
+## Data sources
 - The rain data is obtained from <https://dataplatform.knmi.nl/catalog/datasets/index.html?x-dataset=rad_nl25_rac_mfbs_5min&x-dataset-version=2.0>. Make sure the data is placed like: 'neerslag/data/{year}/{month}/RAD_NL25_RAC_MFBS_5min_XXXXXXXXXXXX_NL.h5'.
 
 - BGT is used to obtain shapefiles with information on the surface type (non-permeable, permeable, water). This requires you to download  and unpack it in 'layerbuilder/data/'.
@@ -56,5 +56,5 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)
 pip install -r requirements.txt
 ```
 
-Some tools require additional datasets to be downloaded. Please look at the section [data sources](#data-sources) 
+Some tools require additional datasets to be downloaded. Please look at the section [data sources](#data-sources). 
 
