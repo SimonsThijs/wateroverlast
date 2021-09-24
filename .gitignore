@@ -23,6 +23,8 @@ scripts/catboost_info/
 
 p2000meldingen/*.json
 
+generater_to_dslab.sh
+
 *.pkl
 *.gml
 *.png
