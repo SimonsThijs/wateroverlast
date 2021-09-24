@@ -1,2 +1,0 @@
-tar cvzf datasetgenerator.tar.gz data/parsed_w_precise_coords.json layerbuilder/*.py scripts/generate_dataset.py BAG/home_sampler.py coords/rdconverter.py neerslag/precipitation_nl.py helper/helper.py
-scp -P 1234 datasetgenerator.tar.gz s1830120@localhost:/home/s1830120

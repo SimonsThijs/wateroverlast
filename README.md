@@ -16,11 +16,11 @@ The negative examples are obtained by finding adresses close to a flooding which
 
 - BGT is used to obtain shapefiles with information on the surface type (non-permeable, permeable, water). This requires you to download  and unpack it in 'layerbuilder/data/'.
 
-- BAG is used to obtain geometry of affected and surrounding buildings. We use the public wfs from <https://nationaalgeoregister.nl>, thus, does not requires additional files to be downloaded.
+- BAG is used to obtain geometry of affected and surrounding buildings. We use the public wfs from <https://nationaalgeoregister.nl> and thus does not require additional files to be downloaded.
 
 - BAG is used to sample random homes in the Netherlands. This requires you to download  and place it in 'BAG/data/'.
 
-- AHN3 is used to obtain a height map of the area around the affected building. We use the public wcs from <https://nationaalgeoregister.nl>, thus, does not requires additional files to be downloaded.
+- AHN3 is used to obtain a height map of the area around the affected building. We use the public wcs from <https://nationaalgeoregister.nl> and thus does not require additional files to be downloaded.
 
 ## Generating the final dataset
 We use the script 'scripts/generate_dataset.py' to generate the final dataset. This script also serves as an example on how to use the tools provided in the repo. The script works as follows:
