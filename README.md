@@ -5,7 +5,7 @@ The goal of this repo is to provide tools to build a model that can solve floodi
 ## Target
 The target used to build the model is based on the p2000 messaging system used by the emergency services in the Netherlands. We have scraped the fire department messages from 2016 onwards in the whole of the netherlands. The data was scraped from alarmfase1.nl by reverse engineering their app. 
 
-We then filter the scraped messages by the use of the word 'wateroverlast' (flooding). The location of the flooding found by alarmfase1.nl is checked and if not correct, manually corrected. Note, not all messages contain exact locations, sometimes only the street is available. The final dataset of negative examples can be found in the 'data/' directory. The full scrape without the processing can be found here: <>
+We then filter the scraped messages by the use of the word 'wateroverlast' (flooding). The location of the flooding found by alarmfase1.nl is checked and if not correct, manually corrected. Note, not all messages contain exact locations, sometimes only the street is available. The final dataset of negative examples can be found in the 'data/' directory. The full scrape without the processing can be found here: <https://archive.org/download/dataset-50-500-samplerange/final.json>
 
 One of the problems with the p2000 messages is that it is not always sure if the flooding is caused by great amounts of rain or e.g. a broken pipe. In a future step we add a threshold on how much rain must have fallen in the past 3 hours in order to try to solve this problem.
 
